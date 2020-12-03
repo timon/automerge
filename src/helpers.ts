@@ -21,7 +21,15 @@ export function isAuthorAllowed(
     return false
   }
 
-  return reviewAuthorAssociations.includes(pullRequestOrReview.author_association)
+  const { user, author_association: authorAssociation } = pullRequestOrReview
+  const isAllowed = reviewAuthorAssociations.includes(authorAssociation)
+  const userSpec = `${user.login} (${authorAssociation})`
+  const allowedType = reviewAuthorAssociations.join('/')
+
+  if (isAllowed) core.debug(`Accepting review by ${userSpec}`)
+  else core.debug(`Discarding review by ${userSpec} because the user is not a ${allowedType}`)
+
+  return isAllowed
 }
 
 export function isApprovedByAllowedAuthor(review: Review, reviewAuthorAssociations: string[]): boolean {
