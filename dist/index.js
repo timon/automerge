@@ -188,9 +188,7 @@ class AutomergeAction {
     isPullRequestApproved(pullRequest) {
         return __awaiter(this, void 0, void 0, function* () {
             const reviews = (yield this.octokit.pulls.listReviews(Object.assign(Object.assign({}, github.context.repo), { pull_number: pullRequest.number, per_page: 100 }))).data;
-            core.info(`PR ${pullRequest.number} has ${reviews.length} reviews`);
-            // TODO: have better debug
-            core.info(JSON.stringify(reviews[0]));
+            core.debug(`PR ${pullRequest.number} has ${reviews.length} reviews`);
             if (this.input.skipReviewChecks)
                 return true;
             if (reviews.length === 100) {
@@ -306,7 +304,15 @@ function isAuthorAllowed(pullRequestOrReview, reviewAuthorAssociations) {
     if (!pullRequestOrReview.author_association) {
         return false;
     }
-    return reviewAuthorAssociations.includes(pullRequestOrReview.author_association);
+    const { user, author_association: authorAssociation } = pullRequestOrReview;
+    const isAllowed = reviewAuthorAssociations.includes(authorAssociation);
+    const userSpec = `${user.login} (${authorAssociation})`;
+    const allowedType = reviewAuthorAssociations.join('/');
+    if (isAllowed)
+        core.debug(`Accepting review by ${userSpec}`);
+    else
+        core.debug(`Discarding review by ${userSpec} because the user is not a ${allowedType}`);
+    return isAllowed;
 }
 exports.isAuthorAllowed = isAuthorAllowed;
 function isApprovedByAllowedAuthor(review, reviewAuthorAssociations) {
