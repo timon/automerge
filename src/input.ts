@@ -33,6 +33,7 @@ export class Input {
   pullRequest: number | null
   pullRequestAuthorAssociations: string[]
   reviewAuthorAssociations: string[]
+  skipReviewChecks: boolean
   dryRun: boolean
 
   constructor() {
@@ -70,6 +71,7 @@ export class Input {
       this.reviewAuthorAssociations = ['COLLABORATOR', 'MEMBER', 'OWNER']
     }
 
+    this.skipReviewChecks = core.getInput('skip-review-checks') === 'true'
     this.dryRun = core.getInput('dry-run') === 'true'
   }
 

@@ -45,6 +45,11 @@ inputs:
     description: >
       Comma-separated list of required author associations for the review author.
       (By default, reviews by authors which are a `COLLABORATOR`, `MEMBER` or `OWNER` are allowed.)
+  skip-review-checks:
+    required: false
+    description: >
+      Skip review-author-associations checks (use this if you have automated reviews)
+    default: false
   dry-run:
     required: true
     description: >
