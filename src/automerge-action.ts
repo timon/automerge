@@ -206,11 +206,11 @@ export class AutomergeAction {
       })
     ).data
 
-    core.info(`PR ${pullRequest.number} has ${reviews.length} reviews`);
+    core.info(`PR ${pullRequest.number} has ${reviews.length} reviews`)
     // TODO: have better debug
-    core.info(JSON.stringify(reviews[0]));
+    core.info(JSON.stringify(reviews[0]))
 
-    if (this.input.skipReviewChecks) return true;
+    if (this.input.skipReviewChecks) return true
 
     if (reviews.length === 100) {
       core.setFailed('Handling pull requests with more than 100 reviews is not implemented.')
