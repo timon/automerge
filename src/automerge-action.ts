@@ -207,6 +207,7 @@ export class AutomergeAction {
     ).data
 
     core.info(`PR ${pullRequest.number} has ${reviews.length} reviews`);
+    // TODO: have better debug
     core.info(JSON.stringify(reviews[0]));
 
     if (reviews.length === 100) {
